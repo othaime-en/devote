@@ -1,24 +1,86 @@
 # DeVote: A Decentralized Voting Application
 
-This project demonstrates a basic implementation of a voting application on a blockchain.
+Interacting with the DecentralizedVoting Contract using Hardhat
 
-Here is the expected general flow of usage in the application
+This guide will walk you through the steps to interact with the DecentralizedVoting smart contract in a Hardhat environment. You will be able to create voting instances, add candidates, cast votes, and retrieve voting results.
 
-To interact with the contracts above vote, you need to follow these steps:
+Prerequisites:
 
-1. Deploy the `VotingInstance` contract on a network of your choice (e.g. testnet or mainnet).
-2. Call the `createVoteInstance` function with a name and a number of options for your voting instance. For example, `createVoteInstance("Best Movie", 3)` will create a voting instance with the name "Best Movie" and three options.
-3. Call the `addOption` function inherited from the Voting contract with the option name for each option index. For example, `addOption("The Matrix")` will add "The Matrix" as the option for index 0, `addOption("The Lord of the Rings")` will add "The Lord of the Rings" as the option for index 1, and `addOption("The Godfather")` will add "The Godfather" as the option for index 2.
-4. To vote on an instance, call the `voteOnInstance` function with the name and the option index of your choice. For example, `voteOnInstance("Best Movie", 1)` will vote for "The Lord of the Rings" on the "Best Movie" instance.
-5. To close a voting instance, call the `closeVoteInstance` function with the name of the instance. For example, `closeVoteInstance("Best Movie")` will close the "Best Movie" instance and prevent further voting.
-6. To get the names of all current voting instances, call the `getInstanceNames` function. It will return an array of strings with the names of all instances.
-7. To get the vote count for an option on an instance, call the `getVoteCount` function inherited from the Voting contract with the option name. For example, `getVoteCount("The Godfather")` will return the number of votes for "The Godfather" on any instance that has it as an option.
-8. To get the option name by index on an instance, call the `getOption` function inherited from the Voting contract with the index. For example, `getOption(2)` will return "The Godfather" if it is the option for index 2 on any instance.
+- Node.js (https://nodejs.org) installed on your machine.
+- Basic knowledge of Solidity and Ethereum.
+
+Getting Started:
+
+1. Clone the repository:
+   $ git clone <repository-url>
+   $ cd <repository-folder>
+
+2. Install dependencies:
+   $ npm install
+
+3. Set up the Hardhat environment:
+
+   - Rename the `hardhat.example.config.js` file to `hardhat.config.js`.
+   - Update the `hardhat.config.js` file with your preferred network configurations (e.g., local network, testnet, or mainnet).
+   - If using a local network, make sure you have a local blockchain running (e.g., Ganache).
+
+4. Compile the smart contracts:
+   $ npx hardhat compile
+
+5. Run the tests:
+   $ npx hardhat test
+
+Interacting with the Contract:
+
+To interact with the DecentralizedVoting contract, you can create a JavaScript file in the `scripts` directory and use Hardhat's built-in console or write custom scripts.
+
+Example script: `scripts/interact.js`
+
+```javascript
+// Import the ethers library
+const { ethers } = require("hardhat");
+
+async function main() {
+  // Retrieve the contract instance
+  const DecentralizedVoting = await ethers.getContractFactory(
+    "DecentralizedVoting"
+  );
+  const votingContract = await DecentralizedVoting.deploy();
+
+  // Deploy the contract
+  await votingContract.deployed();
+  console.log(
+    "DecentralizedVoting contract deployed at:",
+    votingContract.address
+  );
+
+  // Interact with the contract
+  // ...
+
+  // Run additional functions or tests
+  // ...
+}
+
+// Execute the main function
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+```
+
+Running the script:
+
+To run the script, execute the following command in your terminal:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
+$ npx hardhat run scripts/interact.js --network <network-name>
+Replace <network-name> with the network you configured in the hardhat.config.js file (e.g., localhost for a local network).
 ```
+
+You can modify the interact.js script to interact with the DecentralizedVoting contract using the available functions such as creating instances, adding candidates, casting votes, and retrieving voting results.
+
+For more information on interacting with smart contracts using Hardhat, refer to the Hardhat documentation: https://hardhat.org/getting-started/#interacting-with-the-contract
+
+Please note that the above README.txt file assumes you have set up a Hardhat environment, including installing the required dependencies and configuring the network settings in the `hardhat.config.js` file. Additionally, it provides an example script `scripts/interact.js` that you can use to interact with the DecentralizedVoting contract. You can modify the script according to your requirements and add more functions or tests as needed.
